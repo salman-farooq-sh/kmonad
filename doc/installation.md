@@ -266,7 +266,7 @@ for your OS, etc. You can even use the provided `Dockerfile` for development
 testing. As of now, the built image is not meant to *run* `kmonad`, just to
 build it.
 
-Just do this from the `Dockerfile` directory:
+Just do this from the repository root directory after cloning:
 ``` shell
 # Build the Docker image which will contain the binary.
 docker build -t kmonad-builder -f ci/Dockerfile.linux .
@@ -280,14 +280,7 @@ docker run --rm -v ${PWD}/output:/host/ kmonad-builder bash -c 'cp -vp /output/*
 # Clean up build image, since it is no longer needed.
 docker rmi kmonad-builder
 ```
-You will find a `kmonad` binary in your current directory.
-
-As an added bonus, with recent Docker versions you can build images straight
-from public repo URLs, without even needing to clone the repo.
-Do this as the build step (the first one) in the previous instructions:
-``` shell
-docker build -t kmonad-builder github.com/kmonad/kmonad.git
-```
+You will find a `kmonad` binary in the `output` directory.
 
 #### Podman
 If you are using Podman you must disable labels when bind-mounting a directory to copy the KMonad binary to.
