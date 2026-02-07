@@ -268,19 +268,26 @@ build it.
 
 Just do this from the repository root directory after cloning:
 ``` shell
-# Build the Docker image which will contain the binary.
+# 1. Build the Docker image which will contain the binary.
 docker build -t kmonad-builder -f ci/Dockerfile.linux .
 
-# Spin up an ephemeral Docker container from the built image, to just copy the
-# built binary to the host's current directory bind-mounted inside the
-# container at /host/.
+# 2. Spin up an ephemeral Docker container from the built image, to just copy the
+# built binary to the output directory in host's current directory bind-mounted
+# inside the container at /host/.
 mkdir output
 docker run --rm -v ${PWD}/output:/host/ kmonad-builder bash -c 'cp -vp /output/* /host/'
 
-# Clean up build image, since it is no longer needed.
+# 3. Clean up build image, since it is no longer needed.
 docker rmi kmonad-builder
 ```
 You will find a `kmonad` binary in the `output` directory.
+
+As an added bonus, with recent Docker versions you can build images straight
+from public repo URLs, without even needing to clone the repo.
+Just do this as the build step (the first one) in the previous instructions:
+``` shell
+docker build -t kmonad-builder -f ci/Dockerfile.linux 'https://github.com/kmonad/kmonad.git'
+```
 
 #### Podman
 If you are using Podman you must disable labels when bind-mounting a directory to copy the KMonad binary to.
